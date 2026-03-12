@@ -1,19 +1,30 @@
-import { Button } from "@/components/ui/button"
+import { TicketChat } from "@/components/ticket-chat"
+import { Ticket } from "lucide-react"
 
 export default function Page() {
   return (
-    <div className="flex min-h-svh p-6">
-      <div className="flex max-w-md min-w-0 flex-col gap-4 text-sm leading-loose">
-        <div>
-          <h1 className="font-medium">Project ready!</h1>
-          <p>You may now add components and start building.</p>
-          <p>We&apos;ve already added the button component for you.</p>
-          <Button className="mt-2">Button</Button>
+    <div className="flex flex-col h-svh bg-background">
+      {/* Header */}
+      <header className="border-b px-4 py-3 shrink-0">
+        <div className="max-w-3xl mx-auto flex items-center gap-3">
+          <div className="flex items-center justify-center h-9 w-9 rounded-lg bg-primary">
+            <Ticket className="h-5 w-5 text-primary-foreground" />
+          </div>
+          <div>
+            <h1 className="font-semibold text-sm">Ticket Priority Analyzer</h1>
+            <p className="text-xs text-muted-foreground">
+              Paste a ticket to analyze its priority
+            </p>
+          </div>
         </div>
-        <div className="font-mono text-xs text-muted-foreground">
-          (Press <kbd>d</kbd> to toggle dark mode)
+      </header>
+
+      {/* Chat area */}
+      <main className="flex-1 overflow-hidden">
+        <div className="h-full max-w-3xl mx-auto">
+          <TicketChat />
         </div>
-      </div>
+      </main>
     </div>
   )
 }
