@@ -22,7 +22,7 @@ export function AppSidebar() {
   return (
     <Sidebar draggable>
       <SidebarContent>
-        <SidebarMenu className="p-2 space-y-2">
+        <SidebarMenu className="p-4 space-y-2">
           {items.map((item) => (
             <SidebarMenuItem key={item.href}>
               <SidebarMenuButton asChild className="p-1" isActive={pathname === item.href}>

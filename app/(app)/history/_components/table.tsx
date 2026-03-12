@@ -22,6 +22,7 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
+import { Textarea } from "@/components/ui/textarea"
 
 export type TicketItem = {
     id: string
@@ -40,7 +41,11 @@ const columns: ColumnDef<TicketItem>[] = [
         accessorKey: "input",
         header: "Ticket",
         cell: ({ row }) => (
-            <span className="line-clamp-2 max-w-md">{row.original.input}</span>
+            <Textarea
+                value={row.original.input}
+                className="max-w-xl resize-none h-min"
+                readOnly
+            />
         ),
     },
     {

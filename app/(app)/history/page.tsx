@@ -8,7 +8,10 @@ export default function Page() {
     </h1>
 
     <div className="border-2 rounded-md">
-      <HistoryTable data={[{ id: "1", date: new Date(), input: "Sample ticket" }]} />
+      <HistoryTable data={[
+        { id: "1", date: new Date(), input: "Sample ticket" },
+        { id: "2", date: new Date(), input: "Long tickeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeettickeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeettickeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeettickeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeet" }
+      ]} />
     </div>
 
   </div>

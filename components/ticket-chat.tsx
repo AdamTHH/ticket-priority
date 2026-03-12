@@ -1,10 +1,11 @@
 "use client"
 
-import { useState, useRef, useEffect, useCallback } from "react"
+import { useState, useRef, useEffect } from "react"
 import { Button } from "@/components/ui/button"
-import { Send, Loader2 } from "lucide-react"
+import { Send } from "lucide-react"
 import { Priority, PriorityBadge } from "./priority-badge"
 import { ChatMessage, Message } from "./message"
+import { analyzeTicket } from "@/app/actions/analyze-ticket"
 
 export function TicketChat() {
   const [messages, setMessages] = useState<Message[]>([
@@ -89,69 +90,11 @@ export function TicketChat() {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
   }, [messages])
 
-  async function analyzePriority(ticketText: string): Promise<{
-    priority: Priority
-    explanation: string
-  }> {
-    // Simulated analysis - replace with actual API call
-    await new Promise((resolve) => setTimeout(resolve, 1000))
-
-    const text = ticketText.toLowerCase()
-
-    // Critical indicators
-    if (
-      text.includes("down") ||
-      text.includes("outage") ||
-      text.includes("emergency") ||
-      text.includes("security breach") ||
-      text.includes("data loss") ||
-      text.includes("production")
-    ) {
-      return {
-        priority: "critical",
-        explanation:
-          "This ticket indicates a critical system issue that requires immediate attention. Production systems or security may be impacted.",
-      }
-    }
-
-    // High priority indicators
-    if (
-      text.includes("urgent") ||
-      text.includes("broken") ||
-      text.includes("not working") ||
-      text.includes("blocked") ||
-      text.includes("asap") ||
-      text.includes("deadline")
-    ) {
-      return {
-        priority: "high",
-        explanation:
-          "This ticket describes an issue causing significant impact to users or workflows. Should be addressed soon.",
-      }
-    }
-
-    // Medium priority indicators
-    if (
-      text.includes("slow") ||
-      text.includes("issue") ||
-      text.includes("problem") ||
-      text.includes("error") ||
-      text.includes("bug") ||
-      text.includes("incorrect")
-    ) {
-      return {
-        priority: "medium",
-        explanation:
-          "This ticket describes a moderate issue that affects functionality but has workarounds available.",
-      }
-    }
-
-    // Default to low
-    return {
-      priority: "low",
-      explanation:
-        "This ticket describes a minor issue or feature request that can be addressed in the normal workflow.",
-    }
+  const priorityMap: Record<string, Priority> = {
+    Alacsony: "low",
+    Közepes: "medium",
+    Magas: "high",
+    Kritikus: "critical",
   }
 
   async function handleSubmit(e?: React.FormEvent) {
@@ -170,13 +113,13 @@ export function TicketChat() {
     setIsLoading(true)
 
     try {
-      const result = await analyzePriority(userMessage.content)
+      const result = await analyzeTicket(userMessage.content)
 
       const systemMessage: Message = {
         id: (Date.now() + 1).toString(),
         type: "system",
-        content: result.explanation,
-        priority: result.priority,
+        content: result.description,
+        priority: priorityMap[result.priority],
         timestamp: new Date(),
       }
 
