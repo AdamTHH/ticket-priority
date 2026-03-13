@@ -7,9 +7,16 @@ export type Message = {
     content: string
     priority?: Priority
     timestamp: Date
+    errorDetails?: string
 }
 
-export const ChatMessage = ({ message }: { message: Message }) => {
+export const ChatMessage = ({
+    message,
+    onShowError,
+}: {
+    message: Message
+    onShowError?: (details: string) => void
+}) => {
     const isUser = message.type === "user"
 
     return (
@@ -32,6 +39,14 @@ export const ChatMessage = ({ message }: { message: Message }) => {
                     </div>
                 )}
                 <p className="text-sm whitespace-pre-wrap">{message.content}</p>
+                {message.errorDetails && onShowError && (
+                    <button
+                        onClick={() => onShowError(message.errorDetails!)}
+                        className="text-xs mt-1 text-destructive underline underline-offset-2 hover:opacity-80"
+                    >
+                        Részletek megtekintése
+                    </button>
+                )}
                 <p
                     className={cn(
                         "text-xs mt-1.5",

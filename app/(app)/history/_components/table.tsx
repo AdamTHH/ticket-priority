@@ -11,8 +11,8 @@ import {
 import { useState } from "react"
 import { ArrowUpDown } from "lucide-react"
 
-import { Priority } from "@/components/priority-badge"
 import { PriorityBadge } from "@/components/priority-badge"
+import { TicketHistoryItem } from "@/store/chat-history"
 import { Button } from "@/components/ui/button"
 import {
     Table,
@@ -24,14 +24,7 @@ import {
 } from "@/components/ui/table"
 import { Textarea } from "@/components/ui/textarea"
 
-export type TicketItem = {
-    id: string
-    date: Date
-    input: string
-    priority?: Priority
-}
-
-const columns: ColumnDef<TicketItem>[] = [
+const columns: ColumnDef<TicketHistoryItem>[] = [
     {
         accessorKey: "date",
         header: "Dátum",
@@ -43,7 +36,8 @@ const columns: ColumnDef<TicketItem>[] = [
         cell: ({ row }) => (
             <Textarea
                 value={row.original.input}
-                className="max-w-xl resize-none h-min"
+                className="w-full rounded-xl bg-muted/50 px-4 py-3"
+                rows={1}
                 readOnly
             />
         ),
@@ -60,7 +54,7 @@ const columns: ColumnDef<TicketItem>[] = [
     },
 ]
 
-export function HistoryTable({ data }: { data: TicketItem[] }) {
+export function HistoryTable({ data }: { data: TicketHistoryItem[] }) {
     const [sorting, setSorting] = useState<SortingState>([])
 
     const table = useReactTable({

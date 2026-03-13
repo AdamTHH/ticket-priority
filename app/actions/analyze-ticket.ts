@@ -30,17 +30,17 @@ Provide your response in the following JSON format:
   "description": "{{reason for choice}}"
 }
 
-In the description field, briefly explain why you chose this priority level, referencing specific aspects of the ticket that influenced your decision. Be short and concise.`
+In the description field, explain in maximum 30 words why you chose this priority level. Always write the description in Hungarian.`
 
-export type TicketAnalysis = {
+export type TicketAnalysisResponse = {
   priority: "Alacsony" | "Közepes" | "Magas" | "Kritikus"
   description: string
 }
 
-export async function analyzeTicket(input: string): Promise<TicketAnalysis> {
+export async function analyzeTicket(input: string): Promise<TicketAnalysisResponse> {
   const response = await client.messages.create({
     model: "claude-haiku-4-5-20251001",
-    max_tokens: 1024,
+    max_tokens: 128,
     system: SYSTEM_PROMPT,
     messages: [
       {
@@ -55,10 +55,14 @@ export async function analyzeTicket(input: string): Promise<TicketAnalysis> {
     throw new Error("No text response from Claude")
   }
 
+  console.log("Claude response:", textBlock.text)
+
   const jsonMatch = textBlock.text.match(/\{[\s\S]*\}/)
+
+  console.log("Extracted JSON:", jsonMatch)
   if (!jsonMatch) {
     throw new Error("Could not extract JSON from response")
   }
 
-  return JSON.parse(jsonMatch[0]) as TicketAnalysis
+  return JSON.parse(jsonMatch[0]) as TicketAnalysisResponse
 }

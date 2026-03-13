@@ -8,19 +8,19 @@ export type Priority = "low" | "medium" | "high" | "critical"
 
 const priorityConfig: Record<Priority, { label: string; variant: BadgeVariant }> = {
     low: {
-        label: "Low Priority",
+        label: "Alacsony",
         variant: "green",
     },
     medium: {
-        label: "Medium Priority",
+        label: "Közepes",
         variant: "yellow",
     },
     high: {
-        label: "High Priority",
+        label: "Magas",
         variant: "orange",
     },
     critical: {
-        label: "Critical Priority",
+        label: "Kritikus",
         variant: "red",
     },
 }
