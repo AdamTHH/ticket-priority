@@ -1,0 +1,1 @@
+export type Priority = "Alacsony" | "Közepes" | "Magas" | "Kritikus"

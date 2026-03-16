@@ -1,5 +1,6 @@
 "use server"
 
+import { Priority } from "@/app/(app)/chat/_components/Priority"
 import Anthropic from "@anthropic-ai/sdk"
 
 const client = new Anthropic()
@@ -9,11 +10,8 @@ const SYSTEM_PROMPT = `You are a ticketing system assistant that analyzes suppor
 Your job is to assign one of the following priority levels to this ticket:
 
 - **Alacsony** (Low): Minor issues, cosmetic problems, general questions, or requests that don't impact core functionality. Can be addressed in normal workflow.
-
 - **Közepes** (Medium): Issues that affect functionality but have workarounds, feature requests that would improve user experience, or problems affecting a small number of users.
-
 - **Magas** (High): Significant issues affecting multiple users or important functionality, problems without easy workarounds, or issues that impact business operations.
-
 - **Kritikus** (Critical): System outages, security vulnerabilities, data loss issues, or problems that completely block critical business functions and affect many users.
 
 When determining the priority, consider:
@@ -23,24 +21,39 @@ When determining the priority, consider:
 - The impact on business operations
 - Time sensitivity of the request
 
+In addition to selecting the final priority, simulate how an AI classification model would estimate the probability of each priority category. Provide probability scores between 0 and 1 for each priority. The probabilities should sum to approximately 1.
+
 Provide your response in the following JSON format:
 
 {
   "priority": "Alacsony" | "Közepes" | "Magas" | "Kritikus",
-  "description": "{{reason for choice}}"
+  "priorityLowProbability": number,
+  "priorityMediumProbability": number,
+  "priorityHighProbability": number,
+  "priorityCriticalProbability": number,
+  "message": "{{reason for choice}}"
 }
 
-In the description field, explain in maximum 30 words why you chose this priority level. Always write the description in Hungarian.`
+Rules:
+- The "priority" field must match the category with the highest probability.
+- The "message" must explain the reasoning in **maximum 30 words**.
+- The message must always be written in **Hungarian**.
+- Probability values must be decimals between 0 and 1.`
 
 export type TicketAnalysisResponse = {
-  priority: "Alacsony" | "Közepes" | "Magas" | "Kritikus"
-  description: string
+  priority?: Priority
+  priorityLowProbability?: number
+  priorityMediumProbability?: number
+  priorityHighProbability?: number
+  priorityCriticalProbability?: number
+
+  message: string
 }
 
 export async function analyzeTicket(input: string): Promise<TicketAnalysisResponse> {
   const response = await client.messages.create({
     model: "claude-haiku-4-5-20251001",
-    max_tokens: 128,
+    max_tokens: 256,
     system: SYSTEM_PROMPT,
     messages: [
       {

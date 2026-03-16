@@ -1,6 +1,6 @@
 import { create } from "zustand"
 import { Priority } from "@/components/priority-badge"
-import { Message } from "@/components/message"
+import { Message } from "@/app/(app)/chat/_components/message"
 
 export type TicketHistoryItem = {
   id: string

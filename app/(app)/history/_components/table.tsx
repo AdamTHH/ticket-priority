@@ -10,8 +10,6 @@ import {
 } from "@tanstack/react-table"
 import { useState } from "react"
 import { ArrowUpDown } from "lucide-react"
-
-import { PriorityBadge } from "@/components/priority-badge"
 import { TicketHistoryItem } from "@/store/chat-history"
 import { Button } from "@/components/ui/button"
 import {
@@ -23,6 +21,7 @@ import {
     TableRow,
 } from "@/components/ui/table"
 import { Textarea } from "@/components/ui/textarea"
+import { PriorityBadge } from "../../chat/_components/priority-badge"
 
 const columns: ColumnDef<TicketHistoryItem>[] = [
     {

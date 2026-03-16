@@ -1,32 +1,31 @@
 "use client"
 import { cn } from "@/lib/utils";
-import { Badge } from "./ui/badge";
+import { Priority } from "./Priority";
+import { Badge } from "@/components/ui/badge";
 
 type BadgeVariant = "green" | "yellow" | "orange" | "red" | "link" | "default" | "secondary" | "destructive" | "outline" | "ghost"
 
-export type Priority = "low" | "medium" | "high" | "critical"
-
-const priorityConfig: Record<Priority, { label: string; variant: BadgeVariant }> = {
-    low: {
+const priorityConfig: Record<Priority, { label?: string; variant: BadgeVariant }> = {
+    "Alacsony": {
         label: "Alacsony",
         variant: "green",
     },
-    medium: {
+    "Közepes": {
         label: "Közepes",
         variant: "yellow",
     },
-    high: {
+    "Magas": {
         label: "Magas",
         variant: "orange",
     },
-    critical: {
+    "Kritikus": {
         label: "Kritikus",
         variant: "red",
     },
 }
 
 export const PriorityBadge = ({ text }: { text: Priority }) => {
-    const config = priorityConfig[text]
+    const config = priorityConfig[text] ?? { variant: "default" }
     return (
         <Badge
             variant={config.variant}

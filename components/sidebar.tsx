@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 import { MessageSquare, History } from "lucide-react"
 import {
   Sidebar,
@@ -10,6 +10,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
+import { cn } from "@/lib/utils"
 
 const items = [
   { title: "Chat", href: "/chat", icon: MessageSquare },
@@ -18,6 +19,7 @@ const items = [
 
 export function AppSidebar() {
   const pathname = usePathname()
+  const router = useRouter()
 
   return (
     <Sidebar draggable className="top-14">
@@ -25,11 +27,15 @@ export function AppSidebar() {
         <SidebarMenu className="p-4 space-y-2">
           {items.map((item) => (
             <SidebarMenuItem key={item.href}>
-              <SidebarMenuButton asChild className="p-4 py-5" isActive={pathname === item.href}>
-                <Link href={item.href}>
-                  <item.icon />
-                  <span>{item.title}</span>
-                </Link>
+              <SidebarMenuButton
+                className={cn(
+                  "p-5 transition-colors bg-transparent! hover:bg-accent/80! active:bg-accent/60! cursor-pointer",
+                  pathname === item.href && "bg-accent!"
+                )}
+                onClick={() => router.push(item.href)}
+              >
+                <item.icon className="text-primary"/>
+                <span className="text-primary">{item.title}</span>
               </SidebarMenuButton>
             </SidebarMenuItem>
           ))}
