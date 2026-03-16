@@ -35,7 +35,7 @@ const columns: ColumnDef<TicketHistoryItem>[] = [
         cell: ({ row }) => (
             <Textarea
                 value={row.original.input}
-                className="w-full rounded-xl bg-muted/50 px-4 py-3"
+                className="w-full min-h-12 rounded-xl bg-muted/50 px-4 py-3"
                 rows={1}
                 readOnly
             />

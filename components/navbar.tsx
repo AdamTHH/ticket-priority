@@ -8,7 +8,7 @@ export function Navbar() {
   const { toggleSidebar } = useSidebar()
 
   return (
-    <header className="sticky top-0 z-50 flex h-14 items-center border-b bg-background px-4">
+    <header className="sticky h-14 top-0 z-50 flex flex-row gap-4 p-4 items-center border-b bg-background">
       <Button variant="ghost" size="icon" onClick={toggleSidebar}>
         <Menu className="h-5 w-5" />
       </Button>
